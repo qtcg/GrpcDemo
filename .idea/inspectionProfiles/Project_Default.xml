@@ -1,0 +1,78 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="297" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E129" />
+          <option value="E302" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+          <option value="N806" />
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredNames">
+        <list>
+          <option value="input" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="cv2.IMREAD_UNCHANGED" />
+          <option value="cv2.imread" />
+          <option value="cv2.imwrite" />
+          <option value="cv2.IMWRITE_PNG_COMPRESSION" />
+          <option value="cv2.VideoCapture" />
+          <option value="cv2.CAP_PROP_FPS" />
+          <option value="cv2.CAP_PROP_FRAME_COUNT" />
+          <option value="cv2.cvtColor" />
+          <option value="cv2.COLOR_BGR2RGB" />
+          <option value="cv2.COLOR_RGB2BGR" />
+          <option value="cv2.VideoWriter" />
+          <option value="cv2.VideoWriter_fourcc" />
+          <option value="cv2.resize" />
+          <option value="cv2.findContours" />
+          <option value="cv2.RETR_TREE" />
+          <option value="cv2.CHAIN_APPROX_NONE" />
+          <option value="cv2.RETR_EXTERNAL" />
+          <option value="cv2.CHAIN_APPROX_SIMPLE" />
+          <option value="cv2.minAreaRect" />
+          <option value="cv2.boxPoints" />
+          <option value="cv2.COLOR_BGR2GRAY" />
+          <option value="cv2.threshold" />
+          <option value="cv2.THRESH_BINARY" />
+          <option value="cv2.dilate" />
+          <option value="cv2.erode" />
+          <option value="cv2.COLOR_GRAY2BGR" />
+          <option value="cv2.line" />
+          <option value="cv2.destroyAllWindows" />
+          <option value="cv2.imshow" />
+          <option value="cv2.waitKey" />
+          <option value="cv2.contourArea" />
+          <option value="cv2.fillPoly" />
+          <option value="cv2.INTER_LINEAR" />
+          <option value="numpy.ndarray.append" />
+          <option value="cv2.putText" />
+          <option value="cv2.FONT_HERSHEY_COMPLEX" />
+          <option value="units.CableLocation.CableLocation_2.logger" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service MyService {
+    rpc StartPrediect(Request) returns (stream Response);
+    rpc StopPrediect(Request) returns (Response);
+    rpc ClearData(Request) returns (Response);
+}
+
+message Request {
+    string values = 1;
+}
+
+message Response {
+    string message = 1;
+}
