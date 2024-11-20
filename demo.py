@@ -25,6 +25,32 @@ class Worker(QThread):
         run(self.textEdit_value, ui)
 
 
+def QWidgetandQHBoxLayout(centralwidget, points=None):
+    LayoutWidget = QtWidgets.QWidget(centralwidget)
+    LayoutWidget.setGeometry(QtCore.QRect(points[0], points[1], points[2], points[3]))
+    LayoutWidget.setObjectName("LayoutWidget")
+    Layout = QtWidgets.QHBoxLayout(LayoutWidget)
+    Layout.setContentsMargins(0, 0, 0, 0)
+    Layout.setObjectName("Layout")
+    return LayoutWidget, Layout
+
+
+def PushButton(centralwidget, points=None):
+    horizontalLayoutWidget, horizontalLayout = QWidgetandQHBoxLayout(centralwidget, points)
+    file = QtWidgets.QPushButton(horizontalLayoutWidget)
+    file.setObjectName("file")
+    horizontalLayout.addWidget(file)
+    return file
+
+
+def LineEdit(centralwidget, points=None):
+    verticalLayoutWidget, verticalLayout = QWidgetandQHBoxLayout(centralwidget, points)
+    lineEdit = QtWidgets.QLineEdit(verticalLayoutWidget)
+    lineEdit.setObjectName("lineEdit")
+    verticalLayout.addWidget(lineEdit)
+    return lineEdit
+
+
 class Ui_MainWindow(QMainWindow):
     def __init__(self, MainWindow):
         super().__init__()
@@ -35,37 +61,28 @@ class Ui_MainWindow(QMainWindow):
         self.train = QtWidgets.QPushButton(self.centralwidget)
         self.train.setGeometry(QtCore.QRect(180, 550, 91, 41))
         self.train.setObjectName("train")
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(150, 110, 111, 101))
-        self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.file = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.file.setObjectName("file")
-        self.horizontalLayout_2.addWidget(self.file)
+
+        self.file = PushButton(self.centralwidget, (150, 110, 111, 101))
+        self.out_file = PushButton(self.centralwidget, (150, 270, 111, 101))
+
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setGeometry(QtCore.QRect(440, 80, 441, 421))
         self.textBrowser.setObjectName("textBrowser")
-        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(60, 180, 311, 121))
-        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.lineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout.addWidget(self.lineEdit)
+
+        self.lineEdit = LineEdit(self.centralwidget, (60, 180, 311, 121))
+        self.lineEdit_outpath = LineEdit(self.centralwidget, (60, 340, 311, 121))
 
         self.stop = QtWidgets.QPushButton(self.centralwidget)
         self.stop.setGeometry(QtCore.QRect(610, 550, 91, 41))
         self.stop.setObjectName("stop")
+
         # self.gpid = QtWidgets.QTextBrowser(self.centralwidget)
         # self.gpid.setGeometry(QtCore.QRect(440, 40, 441, 41))
         # self.gpid.setObjectName("gpid")
         # self.kill_pid = QtWidgets.QLineEdit(self.centralwidget)
         # self.kill_pid.setGeometry(QtCore.QRect(500, 560, 171, 21))
         # self.kill_pid.setObjectName("kill_pid")
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 945, 22))
@@ -83,6 +100,7 @@ class Ui_MainWindow(QMainWindow):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.file.clicked.connect(self.msg)
+        self.out_file.clicked.connect(self.out_msg)
         self.train.clicked.connect(self.get_lineEdit)
         self.stop.clicked.connect(self.quit_app)
 
@@ -91,11 +109,14 @@ class Ui_MainWindow(QMainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.train.setText(_translate("MainWindow", "Prediect"))
         self.file.setText(_translate("MainWindow", "选择Video"))
+        self.out_file.setText(_translate("MainWindow", "选择输出目录"))
         self.stop.setText(_translate("MainWindow", "STOP"))
 
     def msg(self, Filepath):
-        m = QtWidgets.QFileDialog.getOpenFileNames(None, '选择文件', "D:/data/Automatic_wiring/cls/doubleCam/20241105", "All Files(*);;Text Files(*.txt)")
+        m = QtWidgets.QFileDialog.getOpenFileNames(None, '选择文件', "D:/data/Automatic_wiring/cls/doubleCam/20241105",
+                                                   "All Files(*);;Text Files(*.txt)")
         # m = QtWidgets.QFileDialog.getExistingDirectory(None, "选择目录", "")
+        self.quit_app()
         self.textBrowser.clear()
         self.log_buffer.clear()
         threading.Thread(target=self.poplog_buffer)
@@ -105,11 +126,22 @@ class Ui_MainWindow(QMainWindow):
         except:
             self.printf('Need Video Path')
 
+    def out_msg(self, Filepath):
+        # m = QtWidgets.QFileDialog.getOpenFileNames(None, '选择文件', "D:/data/Automatic_wiring/cls/doubleCam/20241105",
+        #                                            "All Files(*);;Text Files(*.txt)")
+        m = QtWidgets.QFileDialog.getExistingDirectory(None, "选择目录", "D:/data/Automatic_wiring/cls/doubleCam/20241105")
+        try:
+            self.lineEdit_outpath.setText(m)
+            self.printf("输出目录：{}".format(m))
+        except:
+            self.printf('Need Video Path')
+
     def get_lineEdit(self):
         # current_file_path = os.path.dirname(os.path.abspath(__file__))
         textEdit_value = dict()
         try:
             textEdit_value['video'] = self.lineEdit.text()
+            textEdit_value['out_path'] = self.lineEdit_outpath.text()
         except Exception as e:
             self.printf(e)
         textEdit_value['onnx_file'] = os.path.join('C:\\Program Files\\trtmodel', 'pp_liteseg_CurrentLine_1030_1.onnx')
@@ -122,14 +154,11 @@ class Ui_MainWindow(QMainWindow):
     def quit_app(self):
         try:
             self.thread_2 = StopRun()
-        except:
+        except Exception as e:
             self.printf('None Need Stop')
 
     def printf(self, mypstr):
         self.log_buffer.append(mypstr)  # 将信息存入缓存
-        # 可以设置一个最大缓存大小以避免占用过多内存
-        # if len(self.log_buffer) > 1:  # 例如缓存最大为100条
-        #     self.log_buffer.pop(0)
 
     def poplog_buffer(self):
         if len(self.log_buffer) > 10:  # 例如缓存最大为100条
@@ -156,7 +185,8 @@ class Ui_MainWindow(QMainWindow):
 
 def closeEvent(self, event: QtGui.QCloseEvent):
     reply = QtWidgets.QMessageBox.question(self, '确认退出', '确定要退出吗？',
-                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                           QtWidgets.QMessageBox.No)
     if reply == QtWidgets.QMessageBox.Yes:
         self.thread_2 = StopRun()
         event.accept()
